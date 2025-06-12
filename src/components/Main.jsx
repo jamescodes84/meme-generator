@@ -1,13 +1,27 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 
 export default function Main() {
 
+    const [clicked , setClicked] = useState(false)
+    const [arrayOfMemes, setArrayOfMemes] = useState([])
     const [meme, setMeme ] = useState({
         topText: "One does not simply",
         bottomText: "Walk into Mordor",
         imageUrl:"http://i.imgflip.com/1bij.jpg"
         
     })
+
+    
+    useEffect(() => {
+            
+            fetch( "https://api.imgflip.com/get_memes")
+            .then(res => res.json())
+            .then(data => setArrayOfMemes(data.data.memes))
+            
+            console.log(arrayOfMemes)
+            
+        },[clicked])
+
 
     function handleChange(event) {
         const {value, name} = event.currentTarget
@@ -17,8 +31,9 @@ export default function Main() {
         }))
     }
 
-
-
+    function handleClick() {
+        setClicked(prevClicked => !prevClicked)
+    }
     return (
         <main>
             <div className="form">
@@ -39,7 +54,7 @@ export default function Main() {
                         onChange={handleChange}
                     />
                 </label>
-                <button>Get a new meme image 🖼</button>
+                <button onClick={handleClick}>Get a new meme image 🖼</button>
             </div>
             <div className="meme">
                 <img src={meme.imageUrl} />
