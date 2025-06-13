@@ -11,16 +11,25 @@ export default function Main() {
         
     })
 
-    
     useEffect(() => {
             
             fetch( "https://api.imgflip.com/get_memes")
             .then(res => res.json())
             .then(data => setArrayOfMemes(data.data.memes))
             
-            console.log(arrayOfMemes)
+            //.log(arrayOfMemes)
             
         },[clicked])
+
+    function getRandomMeme() {
+        let randomMemeIndex = Math.floor(Math.random() * (arrayOfMemes.length - 0) + 0)
+        let randomMeme = arrayOfMemes[randomMemeIndex]
+        setMeme(prevMeme => ({
+            ...prevMeme,
+            imageUrl: randomMeme.url
+        }))
+
+    }
 
 
     function handleChange(event) {
@@ -33,6 +42,7 @@ export default function Main() {
 
     function handleClick() {
         setClicked(prevClicked => !prevClicked)
+        getRandomMeme()
     }
     return (
         <main>
